@@ -19,7 +19,7 @@ const Navbar = () => {
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
           <Link href="/" className="flex z-40 font-semibold">
-          Learn<span className="text-purple-600">ey</span>
+            Learn<span className="text-purple-600">ey</span>
           </Link>
 
           <MobileNav isAuth={!!user} />
@@ -82,7 +82,7 @@ const Navbar = () => {
                   Quizzes
                 </Link>
                 <Link
-                  href="/dashboard"
+                  href="/files"
                   className={buttonVariants({
                     variant: "ghost",
                     size: "sm",

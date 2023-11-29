@@ -13,6 +13,7 @@ export async function POST(req: Request, res: Response) {
     const { amount, topic, type } = getQuestionsSchema.parse(body);
     let questions: any;
     if (type === "open_ended") {
+      console.log("AMOUNT", amount);
       questions = await strict_output(
         "You are a helpful AI that is able to generate a pair of question and answers, the length of each answer should not be more than 15 words, store all the pairs of answers and questions in a JSON array",
         new Array(amount).fill(
@@ -24,6 +25,7 @@ export async function POST(req: Request, res: Response) {
         }
       );
     } else if (type === "multiple_choice") {
+      console.log("AMOUNT", amount);
       questions = await strict_output(
         "You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not be more than 15 words, store all answers and questions and options in a JSON array",
         new Array(amount).fill(

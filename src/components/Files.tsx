@@ -9,9 +9,10 @@ import { format } from "date-fns";
 import { Button } from "./ui/button";
 import { useState } from "react";
 
-const Dashboard = () => {
-
-  const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<string | null>(null);
+const Files = () => {
+  const [currentlyDeletingFile, setCurrentlyDeletingFile] = useState<
+    string | null
+  >(null);
 
   const utils = trpc.useContext();
 
@@ -21,12 +22,12 @@ const Dashboard = () => {
     onSuccess: () => {
       utils.getUserFiles.invalidate();
     },
-    onMutate({id}) {
+    onMutate({ id }) {
       setCurrentlyDeletingFile(id);
     },
     onSettled() {
       setCurrentlyDeletingFile(null);
-    }
+    },
   });
 
   return (
@@ -52,7 +53,7 @@ const Dashboard = () => {
                 className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow transition hover:shadow-lg"
               >
                 <Link
-                  href={`/dashboard/${file.id}`}
+                  href={`/files/${file.id}`}
                   className="flex flex-col gap-2"
                 >
                   <div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
@@ -73,15 +74,21 @@ const Dashboard = () => {
                     {format(new Date(file.createdAt), "d MMM yyyy")}
                   </div>
                   <div>
-                    <MessageSquare className="h-4 w-4" />
-                    3
+                    <MessageSquare className="h-4 w-4" />3
                   </div>
 
-                  <Button size="sm" className="w-full" variant="destructive" onClick={() => deleteFile({id: file.id})}>
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    variant="destructive"
+                    onClick={() => deleteFile({ id: file.id })}
+                  >
                     {currentlyDeletingFile === file.id ? (
-                      <Loader2 className="h-4 w-4 animate-spin"/>
-                    ) : <TrashIcon className="h-4 w-4" />}
-                    </Button>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <TrashIcon className="h-4 w-4" />
+                    )}
+                  </Button>
                 </div>
               </li>
             ))}
@@ -98,4 +105,4 @@ const Dashboard = () => {
     </main>
   );
 };
-export default Dashboard;
+export default Files;

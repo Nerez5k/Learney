@@ -1,23 +1,9 @@
-import Dashboard from "@/components/Dashboard";
-import { db } from "@/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { redirect } from "next/navigation";
+import React from "react";
 
-const Page = async () => {
-    const {getUser} = getKindeServerSession();
-    const user = getUser();
+type Props = {};
 
-    if(!user || !user.id) redirect('/auth-callback?origin=dashboard')
+const page = (props: Props) => {
+  return <div>Dashboard</div>;
+};
 
-    const dbUser = await db.user.findFirst({
-        where: {
-            id: user.id
-        }
-    })
-
-    if(!dbUser) redirect('/auth-callback?origin=dashboard');
-
-    return <Dashboard />
-}
-
-export default Page;
+export default page;
