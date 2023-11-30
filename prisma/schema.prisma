@@ -15,12 +15,13 @@ model User {
   File    File[]
   Message Message[]
   Course  Course[]
-  games Game[]
+  games   Game[]
 
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  stripeCustomerId       String?     @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?     @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?     @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?   @map(name: "stripe_current_period_end")
+  Flashcard              Flashcard[]
 }
 
 enum UploadStatus {
@@ -61,10 +62,9 @@ model Message {
   fileId    String?
 }
 
-
 model Course {
-  id   String @id @default(cuid())
-  name String
+  id    String @id @default(cuid())
+  name  String
   image String
   units Unit[]
 
@@ -75,44 +75,43 @@ model Course {
 }
 
 model Unit {
-  id   String @id @default(cuid())
-  name String
+  id       String @id @default(cuid())
+  name     String
   courseId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Course    Course?    @relation(fields: [courseId], references: [id])
-  chapters Chapter[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Course    Course?   @relation(fields: [courseId], references: [id])
+  chapters  Chapter[]
 
   @@index([courseId], name: "courseId")
 }
 
 model Chapter {
-  id String @id @default(cuid())
+  id     String @id @default(cuid())
   unitId String
 
-  name String
+  name               String
   youtubeSearchQuery String
-  videoId String?
-  summary String? @db.VarChar(3000)
-  unit Unit? @relation(fields: [unitId], references: [id])
-  questions Question[]
+  videoId            String?
+  summary            String?    @db.VarChar(3000)
+  unit               Unit?      @relation(fields: [unitId], references: [id])
+  questions          Question[]
 
   @@index([unitId], name: "unitId")
 }
 
 model Question {
-  id String @id @default(cuid())
+  id        String @id @default(cuid())
   chapterId String
 
-  question String @db.VarChar(3000)
-  answer String @db.VarChar(3000)
-  options String @db.VarChar(3000)
-  chapter Chapter? @relation(fields: [chapterId], references: [id])
+  question String   @db.VarChar(3000)
+  answer   String   @db.VarChar(3000)
+  options  String   @db.VarChar(3000)
+  chapter  Chapter? @relation(fields: [chapterId], references: [id])
 
   @@index([chapterId], name: "chapterId")
 }
-
 
 enum GameType {
   multiple_choice
@@ -120,14 +119,14 @@ enum GameType {
 }
 
 model Game {
-  id          String     @id @default(cuid())
+  id          String         @id @default(cuid())
   userId      String
   questions   QuizQuestion[]
   timeStarted DateTime
   topic       String
   timeEnded   DateTime?
   gameType    GameType
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -152,4 +151,19 @@ model QuizQuestion {
   game Game @relation(fields: [gameId], references: [id])
 
   @@index([gameId])
+}
+
+model Flashcard {
+  id        String  @id @default(cuid())
+  title     String?
+  frontText String
+  backText  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@index([userId], name: "userId")
 }
