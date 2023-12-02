@@ -32,8 +32,7 @@ export default function Component() {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">Flashcards</CardTitle>
-              <IconLayers className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <CardTitle className="text-sm fostext-gray-500 dark:text-gray-400" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">20</div>

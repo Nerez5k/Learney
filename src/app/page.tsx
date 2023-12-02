@@ -27,16 +27,16 @@ export default function Home() {
           </p>
         </div>
         <h1 className="max-w-4x1 text-5xl font-bold md:text-6xl lg:text-7x1">
-          Chat with your{" "}
+          Rozmawiaj ze swoimi{" "}
           <span className="text-purple-600">
             <TypewriterTitle />
           </span>{" "}
-          and many more in seconds!
+          w zaledwie kilka sekund!
         </h1>
         <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
-          Learney allows you to have conversations with your documents, books
-          and many more in seconds. Just upload your document and start chatting
-          with it or create flashcards.
+          Learney pozwala Ci na przeprowadzanie konwersacji ze swoimi
+          dokumentami, książkami i wiele więcej! Wystarczy przesłać swój
+          dokument i zacząć z nim rozmawiać lub tworzyć fiszki.
         </p>
 
         <Link
@@ -186,7 +186,8 @@ export default function Home() {
               Join the community
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-            Supported by a network of early advocates, contributors, and champions.
+              Supported by a network of early advocates, contributors, and
+              champions.
             </p>
           </div>
         </div>
