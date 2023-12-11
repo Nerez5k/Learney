@@ -1,22 +1,21 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 
 type Props = {};
 
-const CreateQuizButton = (props: Props) => {
+const CreateFlashcardButton = (props: Props) => {
   const router = useRouter();
-
   return (
     <Button
       onClick={() => {
-        router.push(`/quizzes/create`);
+        router.push(`/flashcards/create`);
       }}
     >
-      Create Quiz
+      Create Flashcard
     </Button>
   );
 };
 
-export default CreateQuizButton;
+export default CreateFlashcardButton;

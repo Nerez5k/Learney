@@ -1,56 +1,155 @@
+import HistoryComponent from "@/components/HistoryComponent";
 import { Button } from "@/components/ui/button";
-import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card";
+import {
+  CardTitle,
+  CardHeader,
+  CardContent,
+  Card,
+  CardDescription,
+} from "@/components/ui/card";
+import { db } from "@/db";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Component() {
+export default async function Component() {
+  const { getUser } = getKindeServerSession();
+  const user = getUser();
+
+  if (!user || !user.id) redirect("/auth-callback?origin=quizzes");
+  const flashcardsCount = await db.flashcard.count({
+    where: {
+      userId: user.id,
+    },
+  });
+  const coursesCount = await db.course.count({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  const quizzesCount = await db.game.count({
+    where: {
+      userId: user.id,
+    },
+  });
+
+  const filesCount = await db.file.count({
+    where: {
+      userId: user.id,
+    },
+  });
+
   return (
     <div className="flex flex-col w-full min-h-screen">
-      <main className="flex min-h-[calc(100vh-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="col-span-2 md:col-span-3 lg:col-span-2 lg:row-span-4">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">Files</CardTitle>
-              <IconFile className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+      <main className="flex min-h-[calc(100vh-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10 ">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 ">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Flashcards</CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-muted-foreground"
+              >
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">15</div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                3 new this week
+              <div className="text-2xl font-bold">{flashcardsCount}</div>
+              <p className="text-xs text-muted-foreground">
+                +20.1% from last month
               </p>
             </CardContent>
           </Card>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium">Quizzes</CardTitle>
-              <IconClipboard className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">8</div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                1 new this week
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm fostext-gray-500 dark:text-gray-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">20</div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                5 new this week
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="col-span-2 md:col-span-3 lg:col-span-2 lg:row-span-2">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Courses</CardTitle>
-              <IconBook className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-muted-foreground"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                2 new this week
+              <div className="text-2xl font-bold">{coursesCount}</div>
+              <p className="text-xs text-muted-foreground">
+                +180.1% from last month
               </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Quizzes</CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-muted-foreground"
+              >
+                <rect width="20" height="14" x="2" y="5" rx="2" />
+                <path d="M2 10h20" />
+              </svg>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{quizzesCount}</div>
+              <p className="text-xs text-muted-foreground">
+                +19% from last month
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Files</CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                className="h-4 w-4 text-muted-foreground"
+              >
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{filesCount}</div>
+              <p className="text-xs text-muted-foreground">
+                +201 since last hour
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="col-span-3 lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">
+                Recent Activities
+              </CardTitle>
+              <CardDescription>
+                You have played a total of x games today.
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent className="max-h-[380px] overflow-y-auto scrollbar-hide">
+              <HistoryComponent limit={10} userId={user.id} />
             </CardContent>
           </Card>
         </div>

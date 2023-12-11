@@ -154,10 +154,9 @@ model QuizQuestion {
 }
 
 model Flashcard {
-  id        String  @id @default(cuid())
-  title     String?
-  frontText String
-  backText  String
+  id         String          @id @default(cuid())
+  title      String?
+  flashcards FlashcardItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -166,4 +165,15 @@ model Flashcard {
   userId String?
 
   @@index([userId], name: "userId")
+}
+
+model FlashcardItem {
+  id          String @id @default(cuid())
+  flashcardId String
+  frontText   String
+  backText    String
+
+  Flashcard Flashcard @relation(fields: [flashcardId], references: [id])
+
+  @@index([flashcardId])
 }

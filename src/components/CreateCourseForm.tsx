@@ -23,12 +23,15 @@ const CreateCourseForm = () => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const {mutate: createChapters, isLoading} = useMutation({
-    mutationFn: async ({title, units}: Input) => {
-      const response = await axios.post('/api/course/createChapters', {title, units});
+  const { mutate: createChapters, isLoading } = useMutation({
+    mutationFn: async ({ title, units }: Input) => {
+      const response = await axios.post("/api/course/createChapters", {
+        title,
+        units,
+      });
       return response.data;
-    }
-  })
+    },
+  });
   const form = useForm<Input>({
     resolver: zodResolver(crateChapterSchema),
     defaultValues: {
@@ -38,7 +41,7 @@ const CreateCourseForm = () => {
   });
 
   function onSubmit(data: Input) {
-    if(data.units.some(unit=>unit === "")) {
+    if (data.units.some((unit) => unit === "")) {
       return toast({
         title: "Something went wrong!",
         description: "Please fill all the units.",
@@ -46,12 +49,12 @@ const CreateCourseForm = () => {
       });
     }
     createChapters(data, {
-      onSuccess: ({courseId}) => {
+      onSuccess: ({ courseId }) => {
         toast({
           title: "Success!",
           description: "Course created successfully.",
         });
-        router.push(`/courses/create/${courseId}`)
+        router.push(`/courses/create/${courseId}`);
       },
       onError: (error) => {
         console.error(error);
@@ -60,7 +63,7 @@ const CreateCourseForm = () => {
           description: "Something went wrong... Please try again later.",
           variant: "destructive",
         });
-      }
+      },
     });
   }
 
@@ -76,12 +79,9 @@ const CreateCourseForm = () => {
             render={({ field }) => {
               return (
                 <FormItem className="flex flex-col items-start w-full sm:items-center sm:flex-row">
-                  <FormLabel className="flex-[1] text-xl ">Title</FormLabel>
+                  <FormLabel className="flex-[1] text-xl ">Tytuł</FormLabel>
                   <FormControl className="flex-[6]">
-                    <Input
-                      placeholder="Enter the main topic of the course"
-                      {...field}
-                    />
+                    <Input placeholder="Podaj główny temat kursu" {...field} />
                   </FormControl>
                 </FormItem>
               );
@@ -109,11 +109,11 @@ const CreateCourseForm = () => {
                       >
                         <FormItem className="flex flex-col items-start w-full sm:items-center sm:flex-row">
                           <FormLabel className="flex-[1] text-xl">
-                            Unit {index + 1}
+                            Sekcja {index + 1}
                           </FormLabel>
                           <FormControl className="flex-[6]">
                             <Input
-                              placeholder="Enter subtopic of the course"
+                              placeholder="Podaj tytuł sekcji"
                               {...field}
                             />
                           </FormControl>
@@ -137,7 +137,7 @@ const CreateCourseForm = () => {
                   form.setValue("units", [...form.watch("units"), ""]);
                 }}
               >
-                Add unit
+                Dodaj sekcje
                 <Plus className="w-4 h-4 ml-2 text-green-500" />
               </Button>
               <Button
@@ -148,15 +148,20 @@ const CreateCourseForm = () => {
                   form.setValue("units", [...form.watch("units").slice(0, -1)]);
                 }}
               >
-                Delete unit
+                Usuń sekcje
                 <Trash className="w-4 h-4 ml-2 text-red-500" />
               </Button>
             </div>
             <Separator className="flex-[1]" />
           </div>
 
-          <Button disabled={isLoading} type="submit" className="w-full mt-6" size="lg" >
-            Create your course
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="w-full mt-6"
+            size="lg"
+          >
+            Stwórz swój kurs!
           </Button>
         </form>
       </Form>

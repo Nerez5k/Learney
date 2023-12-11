@@ -55,7 +55,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  href="/courses"
+                  href="/flashcards"
                   className={buttonVariants({
                     variant: "ghost",
                     size: "sm",

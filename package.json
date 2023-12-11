@@ -71,6 +71,7 @@
     "string-similarity-js": "^2.1.4",
     "stripe": "^13.7.0",
     "tailwind-merge": "^1.14.0",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
