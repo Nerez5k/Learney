@@ -40,7 +40,6 @@ const ChartDashboardComponent = (props: Props) => {
     plugins: {
       legend: {
         display: true,
-        position: "right",
         labels: {
           usePointStyle: true,
           color: "#006192", // Zmiana z 'fontColor' na 'color'
