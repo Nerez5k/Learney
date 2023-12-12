@@ -2,42 +2,38 @@ import { db } from "@/db";
 import { openai } from "@/lib/openai";
 import { SendMessageValidator } from "@/lib/validators/SendMessageValidator";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import {
-  SupabaseClient,
-  createClient,
-  PostgrestError,
-} from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
 
 import { OpenAIStream, StreamingTextResponse } from "ai";
 
 export const POST = async (req: NextRequest) => {
-  console.log("Request received");
-  const body = await req.json();
-
-  console.log("Request body:", body);
-
-  const { getUser } = getKindeServerSession();
-  const user = getUser();
-
-  const { id: userId } = user;
-
-  if (!userId) return new Response("Unauthorized", { status: 401 });
-
-  const { fileId, message } = SendMessageValidator.parse(body);
-
-  console.log("File ID:", fileId, "Message:", message);
-
-  const file = await db.file.findFirst({
-    where: {
-      id: fileId,
-      userId,
-    },
-  });
-
-  if (!file) return new Response("Not found", { status: 404 });
-
   try {
+    console.log("Request received");
+    const body = await req.json();
+
+    console.log("Request body:", body);
+
+    const { getUser } = getKindeServerSession();
+    const user = getUser();
+
+    const { id: userId } = user;
+
+    if (!userId) return new Response("Unauthorized", { status: 401 });
+
+    const { fileId, message } = SendMessageValidator.parse(body);
+
+    console.log("File ID:", fileId, "Message:", message);
+
+    const file = await db.file.findFirst({
+      where: {
+        id: fileId,
+        userId,
+      },
+    });
+
+    if (!file) return new Response("Not found", { status: 404 });
+
     await db.message.create({
       data: {
         text: message,
@@ -81,7 +77,12 @@ export const POST = async (req: NextRequest) => {
 
     if (!Array.isArray(results.data)) {
       console.error("Expected an array of results, but got:", results.data);
-      return;
+      return new Response(
+        JSON.stringify({ error: "Bad response from database" }),
+        {
+          status: 500,
+        }
+      );
     }
 
     const pageContentJoined = results.data.map((r) => r.content).join("\n\n");
@@ -148,12 +149,9 @@ export const POST = async (req: NextRequest) => {
 
     return new StreamingTextResponse(stream);
   } catch (error) {
-    console.error("ASDASDSADSA" + error);
+    console.error("Error occurred: " + error);
     return new Response(JSON.stringify({ error: "Internal Server Error" }), {
       status: 500,
     });
   }
-  return new Response(JSON.stringify({ message: "Unexpected error" }), {
-    status: 500,
-  });
 };
