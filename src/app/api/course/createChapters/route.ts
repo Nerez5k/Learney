@@ -1,6 +1,5 @@
 // SCIEZKA: /api/course/createChapters
 
-import { NextRequest, NextResponse } from "next/server";
 import { crateChapterSchema } from "@/lib/validators/course";
 import { strict_output } from "@/lib/strictGpt";
 import { get } from "http";
@@ -9,14 +8,14 @@ import { db } from "@/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 //MOZE DO ZMIANY NEXTRESPONSE NA SAMO RESPONSE
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: Request, res: Response) => {
   const body = await req.json();
   const { title, units } = crateChapterSchema.parse(body);
 
   const { getUser } = getKindeServerSession();
   const user = getUser();
 
-  if (!title || !units) return new NextResponse("Not found", { status: 404 });
+  if (!title || !units) return new Response("Not found", { status: 404 });
 
   if (!user || !user.id) throw new Error("Unauthorized");
 
@@ -80,5 +79,5 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     });
   }
 
-  return NextResponse.json({ courseId: course.id });
+  return Response.json({ courseId: course.id });
 };

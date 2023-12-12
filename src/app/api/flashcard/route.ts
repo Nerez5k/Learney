@@ -2,14 +2,13 @@ import { db } from "@/db";
 import { flashcardCreationSchema } from "@/lib/validators/flashcard";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import axios from "axios";
-import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
     const { getUser } = getKindeServerSession();
     const user = getUser();
     if (!user.id) {
-      return NextResponse.json(
+      return Response.json(
         { error: "You must be logged in to create a game." },
         {
           status: 401,
@@ -51,10 +50,10 @@ export async function POST(req: Request, res: Response) {
       data: flashcardItems,
     });
 
-    return NextResponse.json({}, { status: 200 });
+    return Response.json({}, { status: 200 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json(
+    return Response.json(
       { error: "Cos nie smigggga" },
       {
         status: 500,

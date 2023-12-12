@@ -1,6 +1,5 @@
 import { strict_output } from "@/lib/strictGpt";
 import { flashcardCreationSchema } from "@/lib/validators/flashcard";
-import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -20,7 +19,7 @@ export async function POST(req: Request, res: Response) {
       }
     );
     console.log("WYSYLANE DANE:", flashcardsItems);
-    return NextResponse.json(
+    return Response.json(
       {
         flashcardsItems: flashcardsItems,
       },
@@ -30,7 +29,7 @@ export async function POST(req: Request, res: Response) {
     );
   } catch (error) {
     console.log(error);
-    return NextResponse.json(
+    return Response.json(
       { error: "An unexpected error occurred. (ITEMS)" },
       {
         status: 500,

@@ -6,7 +6,6 @@ import {
   getTranscript,
   searchYoutube,
 } from "@/lib/youtube";
-import { NextResponse } from "next/server";
 import { z } from "zod";
 
 const bodyParser = z.object({
@@ -23,7 +22,7 @@ export async function POST(req: Request, res: Response) {
       },
     });
     if (!chapter) {
-      return NextResponse.json(
+      return Response.json(
         {
           success: false,
           error: "Chapter not found",
@@ -74,10 +73,10 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    return NextResponse.json({ success: true });
+    return Response.json({ success: true });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
+      return Response.json(
         {
           success: false,
           error: "Invalid body",
@@ -85,7 +84,7 @@ export async function POST(req: Request, res: Response) {
         { status: 400 }
       );
     } else {
-      return NextResponse.json(
+      return Response.json(
         {
           success: false,
           error: "unknown",

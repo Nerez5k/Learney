@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { z } from "zod";
 import axios from "axios";
 import { db } from "@/db";
@@ -10,7 +9,7 @@ export async function POST(req: Request, res: Response) {
     const { getUser } = getKindeServerSession();
     const user = getUser();
     if (!user.id) {
-      return NextResponse.json(
+      return Response.json(
         { error: "You must be logged in to create a game." },
         {
           status: 401,
@@ -93,10 +92,10 @@ export async function POST(req: Request, res: Response) {
       });
     }
 
-    return NextResponse.json({ gameId: game.id }, { status: 200 });
+    return Response.json({ gameId: game.id }, { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json(
+      return Response.json(
         { error: error.issues },
         {
           status: 400,
@@ -105,7 +104,7 @@ export async function POST(req: Request, res: Response) {
     } else {
       console.log("TUTAEJ");
       console.log(error);
-      return NextResponse.json(
+      return Response.json(
         { error: "An unexpected error occurred." },
         {
           status: 500,
@@ -119,7 +118,7 @@ export async function GET(req: Request, res: Response) {
     const { getUser } = getKindeServerSession();
     const user = getUser();
     if (!user.id) {
-      return NextResponse.json(
+      return Response.json(
         { error: "You must be logged in to create a game." },
         {
           status: 401,
@@ -129,7 +128,7 @@ export async function GET(req: Request, res: Response) {
     const url = new URL(req.url);
     const gameId = url.searchParams.get("gameId");
     if (!gameId) {
-      return NextResponse.json(
+      return Response.json(
         { error: "You must provide a game id." },
         {
           status: 400,
@@ -146,7 +145,7 @@ export async function GET(req: Request, res: Response) {
       },
     });
     if (!game) {
-      return NextResponse.json(
+      return Response.json(
         { error: "Game not found." },
         {
           status: 404,
@@ -154,14 +153,14 @@ export async function GET(req: Request, res: Response) {
       );
     }
 
-    return NextResponse.json(
+    return Response.json(
       { game },
       {
         status: 400,
       }
     );
   } catch (error) {
-    return NextResponse.json(
+    return Response.json(
       { error: "An unexpected error occurred." },
       {
         status: 500,

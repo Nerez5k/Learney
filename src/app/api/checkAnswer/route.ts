@@ -31,9 +31,7 @@ export async function POST(req: Request, res: Response) {
         where: { id: questionId },
         data: { isCorrect },
       });
-      return Response.json({
-        isCorrect,
-      });
+      return new Response(JSON.stringify({ isCorrect }), { status: 200 });
     } else if (question.questionType === "open_ended") {
       let percentageSimilar = stringSimilarity(
         question.answer.toLowerCase().trim(),
@@ -44,10 +42,13 @@ export async function POST(req: Request, res: Response) {
         where: { id: questionId },
         data: { percentageCorrect: percentageSimilar },
       });
-      return Response.json({
-        percentageSimilar,
+      return new Response(JSON.stringify({ percentageSimilar }), {
+        status: 200,
       });
     }
+    return new Response(JSON.stringify({ message: "Invalid question type" }), {
+      status: 400,
+    });
   } catch (error) {
     if (error instanceof ZodError) {
       return Response.json(
@@ -59,5 +60,8 @@ export async function POST(req: Request, res: Response) {
         }
       );
     }
+    return new Response(JSON.stringify({ message: "Internal Server Error" }), {
+      status: 500,
+    });
   }
 }
