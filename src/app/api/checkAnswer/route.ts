@@ -1,5 +1,4 @@
 import { checkAnswerSchema } from "@/schemas/questions";
-import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { db } from "@/db";
 import { stringSimilarity } from "string-similarity-js";
@@ -12,7 +11,7 @@ export async function POST(req: Request, res: Response) {
       where: { id: questionId },
     });
     if (!question) {
-      return NextResponse.json(
+      return Response.json(
         {
           message: "Question not found",
         },
@@ -32,7 +31,7 @@ export async function POST(req: Request, res: Response) {
         where: { id: questionId },
         data: { isCorrect },
       });
-      return NextResponse.json({
+      return Response.json({
         isCorrect,
       });
     } else if (question.questionType === "open_ended") {
@@ -45,13 +44,13 @@ export async function POST(req: Request, res: Response) {
         where: { id: questionId },
         data: { percentageCorrect: percentageSimilar },
       });
-      return NextResponse.json({
+      return Response.json({
         percentageSimilar,
       });
     }
   } catch (error) {
     if (error instanceof ZodError) {
-      return NextResponse.json(
+      return Response.json(
         {
           message: error.issues,
         },
