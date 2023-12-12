@@ -93,8 +93,8 @@ dependencies:
     specifier: ^5.7.0
     version: 5.7.0(next@13.5.2)(react@18.2.0)(uploadthing@5.7.4)
   ai:
-    specifier: ^2.2.20
-    version: 2.2.20(react@18.2.0)(solid-js@1.8.7)(svelte@4.2.8)(vue@3.3.11)
+    specifier: ^2.2.29
+    version: 2.2.29(react@18.2.0)(solid-js@1.8.7)(svelte@4.2.8)(vue@3.3.11)
   autoprefixer:
     specifier: 10.4.16
     version: 10.4.16(postcss@8.4.30)
@@ -4430,8 +4430,8 @@ packages:
       humanize-ms: 1.2.1
     dev: false
 
-  /ai@2.2.20(react@18.2.0)(solid-js@1.8.7)(svelte@4.2.8)(vue@3.3.11):
-    resolution: {integrity: sha512-BTZ8VEsIdapZM46Tt72FzYPY4Kt55ANpYubUSYJCrrdUfMDCPfT/XwqPsXZam1i7Go6YrUPha9VBdrvzQxBtXw==}
+  /ai@2.2.29(react@18.2.0)(solid-js@1.8.7)(svelte@4.2.8)(vue@3.3.11):
+    resolution: {integrity: sha512-/zzSTTKF5LxMGQuNVUnNjs7X6PWYfb6M88Zn74gCUnM3KCYgh0CiAWhLyhKP6UtK0H5mHSmXgt0ZkZYUecRp0w==}
     engines: {node: '>=14.6'}
     peerDependencies:
       react: ^18.2.0
