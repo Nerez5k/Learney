@@ -1,3 +1,4 @@
+import ChartDashboardComponent from "@/components/DashboardChart";
 import HistoryComponent from "@/components/HistoryComponent";
 import { Button } from "@/components/ui/button";
 import {
@@ -111,7 +112,7 @@ export default async function Component() {
             <CardContent>
               <div className="text-2xl font-bold">{quizzesCount}</div>
               <p className="text-xs text-muted-foreground">
-                +19% from last month
+                +100% from last month
               </p>
             </CardContent>
           </Card>
@@ -134,8 +135,19 @@ export default async function Component() {
             <CardContent>
               <div className="text-2xl font-bold">{filesCount}</div>
               <p className="text-xs text-muted-foreground">
-                +201 since last hour
+                +33% since last month
               </p>
+            </CardContent>
+          </Card>
+          <Card className="col-span-3 lg:col-span-2">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">Usage Chart</CardTitle>
+              <CardDescription>
+                A chart showing which of our methods you liked best.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="max-h-[430px] flex justify-center">
+              <ChartDashboardComponent />
             </CardContent>
           </Card>
           <Card className="col-span-3 lg:col-span-2">
@@ -144,7 +156,7 @@ export default async function Component() {
                 Recent Activities
               </CardTitle>
               <CardDescription>
-                You have played a total of x games today.
+                You have played a total of 13 games today.
               </CardDescription>
             </CardHeader>
 

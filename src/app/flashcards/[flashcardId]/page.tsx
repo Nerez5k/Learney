@@ -9,9 +9,26 @@ type Flashcard = {
 
 // Przykładowe dane fiszek
 const flashcardsData: Flashcard[] = [
-  { front: "Front 1", back: "Back 1" },
-  { front: "Front 2", back: "Back 2" },
-  // Dodaj więcej fiszek według potrzeb
+  {
+    front: "Primary Key",
+    back: "A unique identifier for each record in a database table, ensuring no two rows are identical",
+  },
+  {
+    front: "Foreign Key",
+    back: "A field in one table that uniquely identifies a row of another table, establishing a link between them",
+  },
+  {
+    front: "Normalization",
+    back: "The process of organizing data to minimize redundancy and improve data integrity",
+  },
+  {
+    front: "Indexing",
+    back: "Creating indexes on columns to speed up the retrieval of data within a database",
+  },
+  {
+    front: "SQL",
+    back: "A standardized programming language used for managing and manipulating relational databases, performing tasks like querying, updating, and data management",
+  },
 ];
 
 type Props = {};
@@ -43,7 +60,7 @@ const Flashcards = (props: Props) => {
         onClick={() => setFlipped(!flipped)}
         style={{ transformStyle: "preserve-3d", transition: "transform 0.5s" }}
       >
-        <div className="absolute w-full h-full rounded-lg bg-purple-200 flex items-center justify-center font-bold text-xl">
+        <div className="absolute w-full h-full rounded-lg bg-purple-200 flex items-center justify-center font-bold text-xl text-center">
           {flipped ? currentCard.back : currentCard.front}
         </div>
       </div>

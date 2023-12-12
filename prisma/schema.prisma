@@ -155,16 +155,17 @@ model QuizQuestion {
 
 model Flashcard {
   id         String          @id @default(cuid())
-  title      String?
+  userId     String
+  title      String
+  topic      String
   flashcards FlashcardItem[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId], name: "userId")
+  @@index([userId])
 }
 
 model FlashcardItem {

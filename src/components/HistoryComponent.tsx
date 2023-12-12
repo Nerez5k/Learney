@@ -57,7 +57,6 @@ const HistoryComponent = async ({ limit, userId }: Props) => {
       files.map((file) => ({ ...file, type: "File", date: file.createdAt }))
     );
 
-  // Combine and sort all items
   const allItems = [...games, ...courses, ...flashcards, ...files].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );

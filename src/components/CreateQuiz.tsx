@@ -110,7 +110,7 @@ const CreateQuiz = (props: Props) => {
                 name="amount"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Topic</FormLabel>
+                    <FormLabel>Amount</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter an amount..."

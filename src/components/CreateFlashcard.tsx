@@ -23,6 +23,8 @@ import {
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { flashcardCreationSchema } from "@/lib/validators/flashcard";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
 
 type Props = {};
 
@@ -33,10 +35,44 @@ const CreateFlashcard = (props: Props) => {
   const [showLoader, setShowLoader] = React.useState(false);
   const [finishedLoading, setFinishedLoading] = React.useState(false);
   const { toast } = useToast();
+  const { mutate: getFlashcards, isLoading } = useMutation({
+    mutationFn: async ({ amount, title, topic }: Input) => {
+      const response = await axios.post("/api/flashcard", {
+        amount,
+        title,
+        topic,
+      });
+      console.log("TITEJ");
+      return response.data;
+    },
+  });
 
   const form = useForm<Input>({
     resolver: zodResolver(flashcardCreationSchema),
   });
+
+  const onSubmit = async (data: Input) => {
+    console.log("CLICKED");
+    setShowLoader(true);
+    getFlashcards(data, {
+      onError: (error) => {
+        setShowLoader(false);
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 500) {
+            toast({
+              title: "Error",
+              description: "Something went wrong. Please try again later.",
+              variant: "destructive",
+            });
+          }
+        }
+      },
+      onSuccess: ({ flashcardId }: { flashcardId: string }) => {
+        setFinishedLoading(true);
+        console.log("DID IT");
+      },
+    });
+  };
   form.watch();
 
   return (
@@ -48,20 +84,35 @@ const CreateFlashcard = (props: Props) => {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Title</FormLabel>
                     <FormControl>
                       <Input placeholder="Enter a name..." {...field} />
                     </FormControl>
-                    <FormDescription>Please provide a name</FormDescription>
+                    <FormDescription>
+                      Please provide a title for the flashcards list
+                    </FormDescription>
                   </FormItem>
                 )}
-              ></FormField>
+              />
+              <FormField
+                control={form.control}
+                name="topic"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Topic</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter a topic..." {...field} />
+                    </FormControl>
+                    <FormDescription>Please provide a topic</FormDescription>
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="amount"
@@ -69,12 +120,23 @@ const CreateFlashcard = (props: Props) => {
                   <FormItem>
                     <FormLabel>Amount</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter amount..." {...field} />
+                      <Input
+                        placeholder="Enter an amount..."
+                        {...field}
+                        type="number"
+                        min={1}
+                        max={10}
+                        onChange={(e) => {
+                          form.setValue("amount", parseInt(e.target.value));
+                        }}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
-              ></FormField>
-              <Button type="submit">Submit</Button>
+              />
+              <Button disabled={isLoading} type="submit">
+                Submit
+              </Button>
             </form>
           </Form>
         </CardContent>
