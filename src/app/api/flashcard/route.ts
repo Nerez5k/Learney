@@ -33,7 +33,6 @@ export async function POST(req: Request, res: Response) {
         title,
       }
     );
-    console.log("returned data", data);
     type flashcardItem = {
       frontText: string;
       backText: string;
