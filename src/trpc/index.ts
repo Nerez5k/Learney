@@ -86,6 +86,31 @@ export const appRouter = router({
       return file;
     }),
 
+  editFileName: privateProcedure
+    .input(z.object({ id: z.string(), name: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId } = ctx;
+      const { id, name } = input;
+      const file = await db.file.findFirst({
+        where: {
+          id: input.id,
+          userId,
+        },
+      });
+
+      if (!file)
+        throw new TRPCError({ code: "NOT_FOUND", message: "File not found" });
+
+      await db.file.update({
+        where: {
+          id,
+        },
+        data: {
+          name,
+        },
+      });
+    }),
+
   getFile: privateProcedure
     .input(z.object({ key: z.string() }))
     .mutation(async ({ ctx, input }) => {
