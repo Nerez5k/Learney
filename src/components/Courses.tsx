@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { db } from "@/db";
 import Image from "next/image";
+import CreateCourseButton from "./CreateCourseButton";
 
 const Courses = async () => {
   const courses = await db.course.findMany({
@@ -24,6 +25,7 @@ const Courses = async () => {
     <main className="mx-auto max-w-7xl md:p-10">
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
         <h1 className="mb-3 font-bold text-5xl text-gray-900">My courses</h1>
+        <CreateCourseButton />
       </div>
       {courses && courses.length !== 0 ? (
         <ul className="mt-8 grid grid-cols-1 gap-6 divide-y divide-zinc-200 md:grid-cols-2 lg:grid-cols-3">

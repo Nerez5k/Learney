@@ -12,7 +12,7 @@ import { set } from "date-fns";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useToast } from "./ui/use-toast";
 import { trpc } from "@/app/_trpc/client";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 const UploadDropzone = () => {
   const router = useRouter();
@@ -24,29 +24,26 @@ const UploadDropzone = () => {
 
   const { startUpload } = useUploadThing("fileUploader");
 
-  const { mutate: startPolling } = trpc.getFile.useMutation(
-    {
-      onSuccess: (file) => {
-        router.push(`/dashboard/${file.id}`)
-      },
-      retry: true,
-      retryDelay: 500,
-    }
-  )
+  const { mutate: startPolling } = trpc.getFile.useMutation({
+    onSuccess: (file) => {
+      router.push(`/files/${file.id}`);
+    },
+    retry: true,
+    retryDelay: 500,
+  });
 
   const startSimulatedProgress = () => {
     setUploadProgress(0);
 
     const interval = setInterval(() => {
       setUploadProgress((prevProgress) => {
-        if(prevProgress >= 95)
-        {
+        if (prevProgress >= 95) {
           clearInterval(interval);
           return prevProgress;
         }
         return prevProgress + 5;
       });
-    }, 500)
+    }, 500);
 
     return interval;
   };
@@ -61,8 +58,7 @@ const UploadDropzone = () => {
 
         const res = await startUpload(acceptedFile);
 
-        if(!res)
-        {
+        if (!res) {
           return toast({
             title: "Something went wrong!",
             description: "Please try again later.",
@@ -74,8 +70,7 @@ const UploadDropzone = () => {
 
         const key = fileResponse?.key;
 
-        if(!key)
-        {
+        if (!key) {
           return toast({
             title: "Something went wrong!",
             description: "Please try again later.",
@@ -123,21 +118,28 @@ const UploadDropzone = () => {
 
               {isUploading ? (
                 <div className="w-full mt-4 max-w-xs mx-auto">
-                  <Progress 
-                  indicatorColor={
-                    uploadProgress === 100 ? "bg-green-500" : ""
-                  }
-                  value={uploadProgress} className="h-1 w-full bg-zinc-200"/>
+                  <Progress
+                    indicatorColor={
+                      uploadProgress === 100 ? "bg-green-500" : ""
+                    }
+                    value={uploadProgress}
+                    className="h-1 w-full bg-zinc-200"
+                  />
                   {uploadProgress === 100 ? (
                     <div className="flex gap-1 items-center justify-center text-sm text-zinc-700 text-center pt-2">
-                      <Loader2 className="h-3 w-3 animate-spin"/>
+                      <Loader2 className="h-3 w-3 animate-spin" />
                       Redirecting...
                     </div>
-                  ): null}
+                  ) : null}
                 </div>
               ) : null}
 
-              <input {...getInputProps()} type="file" id="dropzone-file" className="hidden"/>
+              <input
+                {...getInputProps()}
+                type="file"
+                id="dropzone-file"
+                className="hidden"
+              />
             </label>
           </div>
         </div>
